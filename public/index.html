@@ -21,15 +21,18 @@
 	   	<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 		<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
 
+		<!-- BIG INT -->
+		<script src="public/BigInt.js"></script>
 
 	    <script src="public/angular/app.js"></script>
+	    
 	    <script>
 		  var socket = io();
-		 /* $('form').submit(function(){
-		    socket.emit('chat message', $('#m').val());
-		    $('#m').val('');
+		  $('form').submit(function(){
+		    socket.emit('chat message', $('#message').val());
+		    $('#message').val('');
 		    return false;
-		  });*/
+		  });
 		</script>
 	</head>
 
@@ -50,15 +53,16 @@
 		<diV class="md-padding centered"> 
 			<h1 class="titleChat">Ganas de chatear?</h1>
 			<div class="thebox">the chat box
-				
+				<ul id="listMessages"></ul>
 
 			</div>
-			<form class="chatForm" style="padding: 20px;">		     	
-			    <md-text-float ng-model="user.lastName" class="chatInput"> </md-text-float>
+			<form class="chatForm" action="" style="padding: 20px;">		     
+				<input id="message" autocomplete="off" class="chatInput" placeholder="Start writting here..."/>	
+
 				<md-button class="md-raised md-primary chatButton">Enviar</md-button>
 		      	
 		    </form>
-			<!--<ul id="messages"></ul>
+			<!--
 			    <form action="">
 			      <input id="m" autocomplete="off" /><button>Send</button>
 			    </form>-->
