@@ -46,27 +46,37 @@
 				</div>
 		    </div>
 		</md-toolbar>
-		<diV class="md-padding centered"> 
-			<h1 class="titleChat">Ganas de chatear?</h1>
-			<div class="thebox" id="chatbox">
-				<!--<ul id="people" class="unstyled"></ul>		-->	
-				<ul id="msgs"></ul>
-
+		<div class="md-padding centered"> 
+			<div>
+				<h1 class="titleChat">Ganas de chatear?</h1> 
+				<md-button ng-click="showUsers = !showUsers" class="md-raised md-primary usersButton">Show Users</md-button>
 			</div>
-			<form class="chatForm" action="" style="padding: 20px;">
-			<!-- NAME -->
-				<div id="login">
-					<input type="text" class="chatInput" ng-hide="name" placeholder="Enter your name..." id="name">
-					<md-button id="join" name="join" class="md-raised md-primary chatButton">Entrar</md-button>
+			
+			<div class="other">
+				<div class="thebox" id="chatbox">				
+					<ul id="msgs"></ul>
 				</div>
+				<form class="chatForm" action="" style="padding: 20px;">
+				<!-- NAME -->
+					<div id="login">
+						<input type="text" class="chatInput" ng-hide="name" placeholder="Enter your name..." id="name">
+						<md-button id="join" name="join" class="md-raised md-primary chatButton">Entrar</md-button>
+					</div>
 
-				<div id="chat">
-					<input type="text" id="msg" autocomplete="off" class="chatInput" placeholder="Start writting here..."/>
-					<md-button id="send" name="send" class="md-raised md-primary chatButton">Enviar</md-button>
-				</div>
-		      	
-		    </form>
-		</diV>
+					<div id="chat">
+						<input type="text" id="msg" autocomplete="off" class="chatInput" placeholder="Start writting here..."/>
+						<md-button id="send" name="send" class="md-raised md-primary chatButton">Enviar</md-button>
+					</div>
+			      	
+			    </form>
+			</div>
+		    <div class="listPeople" ng-show="showUsers">
+		    	<span class="listPeopleTitle">Users connected: </span>
+				<ul id="people"></ul>
+			</div>
+			
+		</div>
+		
 	</body>
 	<footer>
 	</footer>

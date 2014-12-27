@@ -16,6 +16,7 @@
 .titleChat{
 	font-size: 42px !important;
 	margin-top: 45px;
+	display: inline-block;
 }
 
 
@@ -71,6 +72,42 @@
 	overflow-y: none
 }
 
+.listPeople{
+	background-color: #474747 !important;
+	width: 150px;
+	height: 330px;
+	max-height: 330px;
+	float: right;
+	position: absolute;
+	display: inline-block;
+	margin-left: 15px;
+	padding: 10px 10px 10px 10px;
+}
+.listPeopleTitle{
+	color: white;
+	font-size: 14px;
+	font-style: italic;
+}
+
+#people{
+	 list-style-type: none; margin: 0; padding: 0; overflow: auto; max-height: 330px; position: absolute;
+	 color: orange;
+}
+
+#people li{
+	padding-top: 2px;
+	text-align: left;
+}
 #msgs { list-style-type: none; margin: 0; padding: 0; width:  620px; overflow: auto; max-height: 330px; position: absolute; bottom: 10px}
 #msgs li { text-align: left; padding: 5px 10px; height:35px; margin-right: 10px;  }
 #msgs li:nth-child(odd) { background: #7D7D7D; }
+
+.usersButton{
+	font-size: 12px !important;
+	top: -8px;
+	margin-left: 5px;
+}
+
+.other{
+	display: inline-block;
+}

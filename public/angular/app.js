@@ -1,8 +1,10 @@
 var hackthechat = angular.module('hackthechat', ['ngMaterial', 'jsbn.BigInteger']);
 
 
-hackthechat.controller('app', ['$scope','$location', function($scope, $location){
+hackthechat.controller('app', ['$scope','$location', function($scope, $timeout, $location, BigInteger){
   $scope.greeting = 'Hola!';
+
+  $scope.showUsers = false;
 
   //$scope.myInt = new BigInteger('123412341234123412341234123412341234');
   $(document).ready(function(){
@@ -22,7 +24,7 @@ hackthechat.controller('app', ['$scope','$location', function($scope, $location)
 				$("#msg").focus();
 				ready = true;
 			}
-		});
+		});		
 
 		$("#name").keypress(function(e){
 			if(e.which == 13) {
