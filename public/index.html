@@ -16,6 +16,8 @@
 	    <script src="public/bower_components/angular-animate/angular-animate.js"></script>
 	    <script src="public/bower_components/hammerjs/hammer.js"></script>
 	    <script src="public/bower_components/angular-material/angular-material.js"></script>
+	   	<script src="public/bower_components/angularjs-scroll-glue/src/scrollglue.js"></script>
+
 	   	<!-- CHAT STUFF -->
 	   	<script src="public/bower_components/socket.io-client/socket.io.js"></script>
 	   	<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
@@ -23,20 +25,14 @@
 
 		<!-- BIG INT -->
 		<script src="public/BigInt.js"></script>
+		<script src="public/bower_components/angular-jsbn-big-integer/big-integer.js"></script>
+
 
 	    <script src="public/angular/app.js"></script>
-	    
-	    <script>
-		  var socket = io();
-		  $('form').submit(function(){
-		    socket.emit('chat message', $('#message').val());
-		    $('#message').val('');
-		    return false;
-		  });
-		</script>
+
 	</head>
 
-	<body ng-app="hackthechat" md-theme="orange">
+	<body ng-app="hackthechat" ng-controller="app" md-theme="orange">
 		<!-- HERE STARTS THE GOOD STUFF -->
 		<md-toolbar md-scroll-shrink>
 		    <div class="md-toolbar-tools">
@@ -52,23 +48,25 @@
 		</md-toolbar>
 		<diV class="md-padding centered"> 
 			<h1 class="titleChat">Ganas de chatear?</h1>
-			<div class="thebox">the chat box
-				<ul id="listMessages"></ul>
+			<div class="thebox" id="chatbox">
+				<!--<ul id="people" class="unstyled"></ul>		-->	
+				<ul id="msgs"></ul>
 
 			</div>
-			<form class="chatForm" action="" style="padding: 20px;">		     
-				<input id="message" autocomplete="off" class="chatInput" placeholder="Start writting here..."/>	
+			<form class="chatForm" action="" style="padding: 20px;">
+			<!-- NAME -->
+				<div id="login">
+					<input type="text" class="chatInput" ng-hide="name" placeholder="Enter your name..." id="name">
+					<md-button id="join" name="join" class="md-raised md-primary chatButton">Entrar</md-button>
+				</div>
 
-				<md-button class="md-raised md-primary chatButton">Enviar</md-button>
+				<div id="chat">
+					<input type="text" id="msg" autocomplete="off" class="chatInput" placeholder="Start writting here..."/>
+					<md-button id="send" name="send" class="md-raised md-primary chatButton">Enviar</md-button>
+				</div>
 		      	
 		    </form>
-			<!--
-			    <form action="">
-			      <input id="m" autocomplete="off" /><button>Send</button>
-			    </form>-->
 		</diV>
-			
-
 	</body>
 	<footer>
 	</footer>
