@@ -2,13 +2,29 @@ var hackthechat = angular.module('hackthechat', ['ngMaterial', 'jsbn.BigInteger'
 
 
 hackthechat.controller('app', ['$scope','$location', function($scope, $timeout, $location, BigInteger){
+		
   $scope.greeting = 'Hola!';
 
   $scope.showUsers = false;
 
   //$scope.myInt = new BigInteger('123412341234123412341234123412341234');
   $(document).ready(function(){
+		//Using 1536-bit MODP Group
+		//http://datatracker.ietf.org/doc/rfc3526/?include_text=1
+		
+		//Generator
+		var g = str2bigInt('2',10,80);
+		//Prime
+		var p = str2bigInt('FFFFFFFFFFFFFFFFC90FDAA22168C234C4C6628B80DC1CD129024E088A67CC74020BBEA63B139B22514A08798E3404DDEF9519B3CD3A431B302B0A6DF25F14374FE1356D6D51C245E485B576625E7EC6F44C42E9A637ED6B0BFF5CB6F406B7EDEE386BFB5A899FA5AE9F24117C4B1FE649286651ECE45B3DC2007CB8A163BF0598DA48361C55D39A69163FA8FD24CF5F83655D23DCA3AD961C62F356208552BB9ED529077096966D670C354E4ABC9804F1746C08CA237327FFFFFFFFFFFFFFFF',16,80);
+  
+		//Secret key
+		var a = randBigInt(80,0);
+		//Public key
+		var A = bigInt2str(powMod(g,a,p),64);
+		var secret;
+		
 		var socket = io.connect("localhost:8000");
+		
 		$("#chat").hide();
 		$("#name").focus();
 		$("form").submit(function(event){
@@ -17,8 +33,8 @@ hackthechat.controller('app', ['$scope','$location', function($scope, $timeout, 
 
 		$("#join").click(function(){
 			var name = $("#name").val();
-			if (name != "") {
-				socket.emit("join", name);
+			if (name != "" && A != "") {
+				socket.emit("join", name, A);
 				$("#login").detach();
 				$("#chat").show();
 				$("#msg").focus();
@@ -29,8 +45,8 @@ hackthechat.controller('app', ['$scope','$location', function($scope, $timeout, 
 		$("#name").keypress(function(e){
 			if(e.which == 13) {
 				var name = $("#name").val();
-				if (name != "") {
-					socket.emit("join", name);
+				if (name != "" && A != "") {
+					socket.emit("join", name, A);
 					ready = true;
 					$("#login").detach();
 					$("#chat").show();
@@ -55,6 +71,14 @@ hackthechat.controller('app', ['$scope','$location', function($scope, $timeout, 
 				$("#msgs").append("<li>" + msg + "</li>");
 		})
 
+		socket.on("public_key", function(B) {
+			if(ready){
+				secret = powMod(str2bigInt(B,64,80),a,p);
+				//$("#msgs").append("<li>" + bigInt2str(secret,64) + "</li>");
+			}
+		})
+		
+		
 		socket.on("update-people", function(people){
 			if(ready) {
 				$("#people").empty();
@@ -105,7 +129,6 @@ hackthechat.controller('app', ['$scope','$location', function($scope, $timeout, 
 
 
 ( function( $ ) {
-	
 	// Setup variables
 	$window = $(window);
 	$slide = $('.homeSlide');

@@ -6,6 +6,9 @@ var server = require('http').createServer(app)
 var io = require("socket.io").listen(server);
 
 var people = {};
+var public_keyA = '';
+var A_id;
+var public_keyB = '';
 
 //Declaracion de rutas
 app.use("/public", express.static(__dirname + '/public'));
@@ -20,9 +23,20 @@ app.get('/helloworld', function(req, res){
 
 io.sockets.on("connection", function (socket) {
 
-	socket.on("join", function(name){
+	socket.on("join", function(name, key){
 		people[socket.id] = name;
+		//console.log(key);
+		if (Object.keys(people).length==1) {
+			public_keyA = key;
+			A_id=socket.id;
+		} else if (Object.keys(people).length==2) {
+			public_keyB = key;
+			socket.emit("public_key", public_keyA);
+			io.sockets.connected[A_id].emit("public_key", public_keyB);
+		}
+		public_keys = key;
 		socket.emit("update", "Te has conectado al servidor.");
+
 		io.sockets.emit("update", name + " se ha conectado al chat.")
 		io.sockets.emit("update-people", people);
 	});
