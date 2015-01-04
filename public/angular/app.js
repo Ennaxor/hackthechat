@@ -21,7 +21,7 @@ hackthechat.controller('app', ['$scope','$location', function($scope, $timeout, 
 		var a = randBigInt(80,0);
 		//Public key
 		var A = bigInt2str(powMod(g,a,p),64);
-		var secret;
+		var secret="";
 		
 		var socket = io.connect("localhost:8000");
 		
@@ -90,6 +90,19 @@ hackthechat.controller('app', ['$scope','$location', function($scope, $timeout, 
 
 		socket.on("chat", function(who, msg){
 			if(ready) {
+				
+				if (secret!="") {
+					var X = bigInt2str(secret,64);
+					var contador=0;
+					var limit=msg.length;
+					var aux = "";
+					while (contador<limit) {
+						aux += String.fromCharCode((msg).charCodeAt(contador) ^ (X).charCodeAt((contador%(X.length-1))));
+						contador++;
+					}
+					msg=aux;
+				}
+				
 				$("#msgs").append("<li><strong><span class='text-success'>" + who + "</span></strong> dice: " + msg + "</li>");
 			}
 		});
@@ -103,7 +116,18 @@ hackthechat.controller('app', ['$scope','$location', function($scope, $timeout, 
 
 		$("#send").click(function(){
 			var msg = $("#msg").val();
-			if(msg != ""){					
+			if(msg != ""){
+				if (secret!="") {
+					var X = bigInt2str(secret,64);
+					var contador=0;
+					var limit=msg.length;
+					var aux = "";
+					while (contador<limit) {
+						aux += String.fromCharCode((msg).charCodeAt(contador) ^ (X).charCodeAt((contador%(X.length-1))));
+						contador++;
+					}
+					msg=aux;
+				}
 				socket.emit("send", msg);
 				$("#msg").val("");
 				$("#msgs").animate({ scrollTop: $(document).height() }, "slow");
@@ -116,12 +140,22 @@ hackthechat.controller('app', ['$scope','$location', function($scope, $timeout, 
 			if(e.which == 13) {
 				var msg = $("#msg").val();
 				if(msg != ""){
+					if (secret!="") {
+						var X = bigInt2str(secret,64);
+						var contador=0;
+						var limit=msg.length;
+						var aux = "";
+						while (contador<limit) {
+							aux += String.fromCharCode((msg).charCodeAt(contador) ^ (X).charCodeAt((contador%(X.length-1))));
+							contador++;
+						}
+						msg=aux;
+					}
 					socket.emit("send", msg);
 					$("#msg").val("");
 					$("#msgs").animate({ scrollTop: $(document).height() }, "slow");
   					return false;
 				}
-				
 			}
 		});
 

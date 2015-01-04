@@ -34,7 +34,7 @@ io.sockets.on("connection", function (socket) {
 			socket.emit("public_key", public_keyA);
 			io.sockets.connected[A_id].emit("public_key", public_keyB);
 		}
-		public_keys = key;
+
 		socket.emit("update", "Te has conectado al servidor.");
 
 		io.sockets.emit("update", name + " se ha conectado al chat.")
