@@ -117,40 +117,9 @@ hackthechat.controller('app', ['$scope','$location', function($scope, $timeout, 
 		});
 
 		socket.on("chat", function(who, msg){
-			if(ready) {
-				var  total = msg.length;
-							var max = 60;
-							var aux = "";
-							var contadoraux = 0;
-							var contador = 0;
-							var lineas = false;
-							
-							$("#msgs").append("<li><strong><span style='color:orange;'>" + who + ":</span></strong> " + msg + "</li>");
-							//$("#msgs").append("<li><strong><span class='text-success'>" + who + "</span></strong> dice: </li>");
-						/*	
-							while (contador < total) {
-								aux += msg[contador];
-								contador++;
-								contadoraux++;
-								
-								if (contadoraux == max) {
-								
-									$("#msgs").append("<li>" + aux + "</li>");
-									contadoraux = 0;
-									aux = "";
-									lineas = true;
-								}
-							}
-							
-							if (!lineas) {
-							
-								$("#msgs").append("<li>" + aux + "</li>");
-							}
-							else if (contadoraux < max) {
-							
-								$("#msgs").append("<li>" + aux + "</li>");
-							}
-							*/
+			if(ready) {			
+			
+				$("#msgs").append("<li><strong><span style='color:orange;'>" + who + ":</span></strong> " + msg + "</li>");
 			}
 		});
 
@@ -161,23 +130,31 @@ hackthechat.controller('app', ['$scope','$location', function($scope, $timeout, 
 		});
 		
 		socket.on("DH", function(msg, whisperTo){
-		var mensaje = msg;
+		
+			var mensaje = msg;
+			var isCoded = false;
+			var re = /^[w]:.*:/;
+			var whisper = re.test(msg);
+			var whisperStr = msg.split(":");
+			var whisperMsg = whisperStr[2];
+			
 			if(ready) {
 				if (secret!="") {
 				
 					var X = bigInt2str(secret,64);
 					var contador=0;
-					var limit=msg.length;
+					var limit=whisperMsg.length;
 					var aux = "";
-					aux += "w:" + whisperTo + ":";
+					isCoded = true;
 
 					while (contador<limit) {
-						aux += String.fromCharCode((msg).charCodeAt(contador) ^ (X).charCodeAt((contador%(X.length-1))));
+						aux += String.fromCharCode((whisperMsg).charCodeAt(contador) ^ (X).charCodeAt((contador%(X.length-1))));
 						contador++;
 					}
 					mensaje = aux;
 				}
-				socket.emit("send", mensaje);
+				
+				socket.emit("send", mensaje, isCoded, whisperTo);
 			}
 		});
 
@@ -186,9 +163,6 @@ hackthechat.controller('app', ['$scope','$location', function($scope, $timeout, 
 			var msg = $("#msg").val();
 			var whisperStr ="";
 
-			
-			
-			
 			if(msg != ""){
 
 				var re = /^[w]:.*:/;

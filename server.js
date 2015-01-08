@@ -49,7 +49,6 @@ io.sockets.on("connection", function (socket) {
 						whisperId = keys[i];
 						found = true;
 
-						
 						if (socket.id === whisperId) { //can't whisper to ourselves
 							socket.emit("update", "No puedes hablarte a ti mismo.");
 							break;
@@ -62,7 +61,7 @@ io.sockets.on("connection", function (socket) {
 				
 				socket.emit("public_key", publickeys[whisperId]);
 				io.sockets.connected[whisperId].emit("public_key", publickeys[socket.id]);
-				console.log("envio");
+
 				io.sockets.connected[socket.id].emit("DH", msg, whisperTo);
 
 				return true;
@@ -73,16 +72,10 @@ io.sockets.on("connection", function (socket) {
 			}
 	});
 	
-	socket.on("send", function(msg, pi){
-		//process.exit(1);
-		var re = /^[w]:.*:/;
-		var whisper = re.test(msg);
-		var whisperStr = msg.split(":");
-		var found = false;
+	socket.on("send", function(msg, isCoded, whisperTo){
 
-		if (whisper) {
-		
-			var whisperTo = whisperStr[1];
+		if (isCoded) {
+
 			var keys = Object.keys(people);
 			if (keys.length != 0) {
 				for (var i = 0; i<keys.length; i++) {
@@ -96,16 +89,12 @@ io.sockets.on("connection", function (socket) {
 					} 
 				}
 			}
-			if (found && socket.id !== whisperId) {
-				var whisperTo = whisperStr[1];
-				var whisperMsg = whisperStr[2];
-				socket.emit("whisper", {name: "Tu"}, whisperMsg);
-			    io.sockets.connected[whisperId].emit("whisper", people[socket.id], whisperMsg);
-				io.sockets.emit("chat", people[socket.id], whisperMsg);
-			} else {
-				socket.emit("update", "El usuario " + whisperTo + " no existe");
-			}
-		} else {
+				socket.emit("whisper", {name: "Tu"}, msg);
+			    io.sockets.connected[whisperId].emit("whisper", people[socket.id], msg);
+				io.sockets.emit("chat", people[socket.id], msg);
+			
+		} 
+		else {
 			io.sockets.emit("chat", people[socket.id], msg);
 		}
 	});
