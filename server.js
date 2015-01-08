@@ -6,6 +6,7 @@ var server = require('http').createServer(app)
 var io = require("socket.io").listen(server);
 
 var people = {};
+var publickeys = {};
 var public_keyA = '';
 var A_id;
 var public_keyB = '';
@@ -25,29 +26,62 @@ io.sockets.on("connection", function (socket) {
 
 	socket.on("join", function(name, key){
 		people[socket.id] = name;
-		//console.log(key);
-		if (Object.keys(people).length==1) {
-			public_keyA = key;
-			A_id=socket.id;
-		} else if (Object.keys(people).length==2) {
-			public_keyB = key;
-			socket.emit("public_key", public_keyA);
-			io.sockets.connected[A_id].emit("public_key", public_keyB);
-		}
-
+		publickeys[socket.id] = key;
 		socket.emit("update", "Te has conectado al servidor.");
 
 		io.sockets.emit("update", name + " se ha conectado al chat.")
 		io.sockets.emit("update-people", people);
 	});
 
-	socket.on("send", function(msg){
+	socket.on("check", function(user, msg){
+
+			var found = false;
+			var whisperTo = user;
+			
+			var keys = Object.keys(people);
+
+			if (keys.length != 0) {
+
+				for (var i = 0; i<keys.length; i++) {
+
+					if (people[keys[i]] === whisperTo) {
+
+						whisperId = keys[i];
+						found = true;
+
+						
+						if (socket.id === whisperId) { //can't whisper to ourselves
+							socket.emit("update", "No puedes hablarte a ti mismo.");
+							break;
+						}
+					}
+				}
+			}
+
+			if (found && socket.id !== whisperId) {
+				
+				socket.emit("public_key", publickeys[whisperId]);
+				io.sockets.connected[whisperId].emit("public_key", publickeys[socket.id]);
+				console.log("envio");
+				io.sockets.connected[socket.id].emit("DH", msg, whisperTo);
+
+				return true;
+
+			} else {
+				socket.emit("update", "El usuario " + whisperTo + " no existe");
+				return false;
+			}
+	});
+	
+	socket.on("send", function(msg, pi){
 		//process.exit(1);
 		var re = /^[w]:.*:/;
 		var whisper = re.test(msg);
 		var whisperStr = msg.split(":");
 		var found = false;
+
 		if (whisper) {
+		
 			var whisperTo = whisperStr[1];
 			var keys = Object.keys(people);
 			if (keys.length != 0) {
@@ -67,7 +101,7 @@ io.sockets.on("connection", function (socket) {
 				var whisperMsg = whisperStr[2];
 				socket.emit("whisper", {name: "Tu"}, whisperMsg);
 			    io.sockets.connected[whisperId].emit("whisper", people[socket.id], whisperMsg);
-				//socket.emit("whisper", people[socket.id], whisperMsg);
+				io.sockets.emit("chat", people[socket.id], whisperMsg);
 			} else {
 				socket.emit("update", "El usuario " + whisperTo + " no existe");
 			}

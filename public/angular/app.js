@@ -58,9 +58,37 @@ hackthechat.controller('app', ['$scope','$location', function($scope, $timeout, 
 		socket.on("whisper", function(person, msg) {
 		    if (person.name === "Tu") {
 		      s = "susurras";
+			  
+				if (secret!="") {
+					var X = bigInt2str(secret,64);
+					var contador=0;
+					var limit=msg.length;
+					var aux = "";
+					while (contador<limit) {
+						aux += String.fromCharCode((msg).charCodeAt(contador) ^ (X).charCodeAt((contador%(X.length-1))));
+						contador++;
+					}
+					msg=aux;
+					secret ="";
+				}
+			  
 		      $("#msgs").append("<li><strong><span style='color:orange;'>" + person.name + "</span></strong> "+s+": " + msg + "</li>");
 		    } else {
 		      s = "susurra";
+			  
+			  if (secret!="") {
+					var X = bigInt2str(secret,64);
+					var contador=0;
+					var limit=msg.length;
+					var aux = "";
+					while (contador<limit) {
+						aux += String.fromCharCode((msg).charCodeAt(contador) ^ (X).charCodeAt((contador%(X.length-1))));
+						contador++;
+					}
+					msg=aux;
+					secret ="";
+				}
+			  
 		      $("#msgs").append("<li><strong><span style='color:orange;'>" + person + "</span></strong> "+s+": " + msg + "</li>");
 		    }
 		    
@@ -74,7 +102,7 @@ hackthechat.controller('app', ['$scope','$location', function($scope, $timeout, 
 		socket.on("public_key", function(B) {
 			if(ready){
 				secret = powMod(str2bigInt(B,64,80),a,p);
-				//$("#msgs").append("<li>" + bigInt2str(secret,64) + "</li>");
+				return true;
 			}
 		})
 		
@@ -90,20 +118,39 @@ hackthechat.controller('app', ['$scope','$location', function($scope, $timeout, 
 
 		socket.on("chat", function(who, msg){
 			if(ready) {
-				
-				if (secret!="") {
-					var X = bigInt2str(secret,64);
-					var contador=0;
-					var limit=msg.length;
-					var aux = "";
-					while (contador<limit) {
-						aux += String.fromCharCode((msg).charCodeAt(contador) ^ (X).charCodeAt((contador%(X.length-1))));
-						contador++;
-					}
-					msg=aux;
-				}
-				
-				$("#msgs").append("<li><strong><span class='text-success'>" + who + "</span></strong> dice: " + msg + "</li>");
+				var  total = msg.length;
+							var max = 60;
+							var aux = "";
+							var contadoraux = 0;
+							var contador = 0;
+							var lineas = false;
+							
+							$("#msgs").append("<li><strong><span style='color:orange;'>" + who + ":</span></strong> " + msg + "</li>");
+							//$("#msgs").append("<li><strong><span class='text-success'>" + who + "</span></strong> dice: </li>");
+						/*	
+							while (contador < total) {
+								aux += msg[contador];
+								contador++;
+								contadoraux++;
+								
+								if (contadoraux == max) {
+								
+									$("#msgs").append("<li>" + aux + "</li>");
+									contadoraux = 0;
+									aux = "";
+									lineas = true;
+								}
+							}
+							
+							if (!lineas) {
+							
+								$("#msgs").append("<li>" + aux + "</li>");
+							}
+							else if (contadoraux < max) {
+							
+								$("#msgs").append("<li>" + aux + "</li>");
+							}
+							*/
 			}
 		});
 
@@ -112,49 +159,82 @@ hackthechat.controller('app', ['$scope','$location', function($scope, $timeout, 
 			$("#msg").attr("disabled", "disabled");
 			$("#send").attr("disabled", "disabled");
 		});
-
-
-		$("#send").click(function(){
-			var msg = $("#msg").val();
-			if(msg != ""){
+		
+		socket.on("DH", function(msg, whisperTo){
+		var mensaje = msg;
+			if(ready) {
 				if (secret!="") {
+				
 					var X = bigInt2str(secret,64);
 					var contador=0;
 					var limit=msg.length;
 					var aux = "";
+					aux += "w:" + whisperTo + ":";
+
 					while (contador<limit) {
 						aux += String.fromCharCode((msg).charCodeAt(contador) ^ (X).charCodeAt((contador%(X.length-1))));
 						contador++;
 					}
-					msg=aux;
+					mensaje = aux;
 				}
-				socket.emit("send", msg);
-				$("#msg").val("");
-				$("#msgs").animate({ scrollTop: $(document).height() }, "slow");
-  				return false;
+				socket.emit("send", mensaje);
+			}
+		});
 
-			}			
+		$("#send").click(function(){
+
+			var msg = $("#msg").val();
+			var whisperStr ="";
+
+			
+			
+			
+			if(msg != ""){
+
+				var re = /^[w]:.*:/;
+				var whisper = re.test(msg);
+				whisperStr = msg.split(":");
+
+				if (whisper) {
+					var whisperTo = whisperStr[1];
+					socket.emit("check", whisperTo, msg);
+				}
+				else {
+				
+					socket.emit("send", msg);
+				}
+			}
+			$("#msg").val("");
+			$("#msgs").animate({ scrollTop: $(document).height() }, "slow");
+			return false;		
 		});
 
 		$("#msg").keydown(function(e){
 			if(e.which == 13) {
-				var msg = $("#msg").val();
-				if(msg != ""){
-					if (secret!="") {
-						var X = bigInt2str(secret,64);
-						var contador=0;
-						var limit=msg.length;
-						var aux = "";
-						while (contador<limit) {
-							aux += String.fromCharCode((msg).charCodeAt(contador) ^ (X).charCodeAt((contador%(X.length-1))));
-							contador++;
+				if(e.which == 13) {
+			
+					var msg = $("#msg").val();
+					var whisperStr ="";			
+					
+					if(msg != ""){
+
+						var re = /^[w]:.*:/;
+						var whisper = re.test(msg);
+						whisperStr = msg.split(":");
+
+						if (whisper) {
+
+							var whisperTo = whisperStr[1];
+							socket.emit("check", whisperTo, msg);
 						}
-						msg=aux;
+						else {
+						
+							socket.emit("send", msg);
+						}
 					}
-					socket.emit("send", msg);
 					$("#msg").val("");
 					$("#msgs").animate({ scrollTop: $(document).height() }, "slow");
-  					return false;
+					return false;		
 				}
 			}
 		});
@@ -228,7 +308,7 @@ hackthechat.controller('app', ['$scope','$location', function($scope, $timeout, 
 		// Build HTML for Nav
 		$('<div/>', {
 		    'id' : 'slideNav'
-		}).append($('<ul><li class="slideNavPrev"><a class="disabled" href="#" title="Go to previous slide"><span class="ico ico-up">↑</span></a></li><li><span id="activeSlide">'+activeSlide+'</span>/<span id="maxSlides">'+slidesCount+'</span></li><li class="slideNavNext"><a href="#" title="Go to next slide"><span class="ico ico-down">↓</span></a></li></ul>')).appendTo('body').delay(1200).fadeIn(duration);
+		}).append($('<ul><li class="slideNavPrev"><a class="disabled" href="#" title="Go to previous slide"><span class="ico ico-up">?</span></a></li><li><span id="activeSlide">'+activeSlide+'</span>/<span id="maxSlides">'+slidesCount+'</span></li><li class="slideNavNext"><a href="#" title="Go to next slide"><span class="ico ico-down">?</span></a></li></ul>')).appendTo('body').delay(1200).fadeIn(duration);
 		
 
 		// Navigation highligting
@@ -346,11 +426,8 @@ hackthechat.controller('app', ['$scope','$location', function($scope, $timeout, 
 			       htmlbody.animate({scrollTop: ($("#slide-"+slideId).offset().top + customSlideOffset) + 'px'},'slow');
 			        
 		        }
-		    
 		    }
 		}
-	    
-	    
 	}
 		
 } )( jQuery );
@@ -359,5 +436,3 @@ hackthechat.controller('app', ['$scope','$location', function($scope, $timeout, 
 	
 	
 }]);
-
-
