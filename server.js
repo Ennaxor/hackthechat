@@ -101,9 +101,9 @@ io.sockets.on("connection", function (socket) {
 					for (var i = 0; i<keys.length; i++) {
 
 						if (people[keys[i]] != whisperTo && socket.id != [keys[i]]) {
-						
-							io.sockets.connected[keys[i]].emit("chat", msg);
-							console.log("Mandar mensaje general a :" + people[keys[i]]);
+
+							io.sockets.connected[keys[i]].emit("chat", people[socket.id], msg);
+							console.log("Mandar mensaje general a :" + people[keys[i]] + msg);
 						}
 						else {
 							console.log(">>Usuario que participa en el whisper:" + people[keys[i]]);
