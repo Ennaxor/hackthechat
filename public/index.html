@@ -10,7 +10,7 @@
 		<link rel="stylesheet" href="public/bower_components/font-awesome/css/font-awesome.min.css">
 		
 		<link href="public/css/style.css" rel="stylesheet"/>
-		<link href="public/css/main.css" rel="stylesheet"/>
+		<!--<link href="public/css/main.css" rel="stylesheet"/>-->
 
 
 		<script src="public/bower_components/angular/angular.js"></script>
@@ -72,88 +72,81 @@
 				      	
 				    </form>
 				</div>
+				
+				<script>
+					var _Hide = true;
+					var _Info = document.getElementById("protocolinfo");
+					_Info.style.display = "none";
+					function hideinfo () {
+					
+						if (_Hide) {
+						
+						_Info.style.display = "visible";
+						}
+						else {
+						
+						_Info.style.display = "none";
+						}
+					}
+				</script>
 
 			    <div class="listPeople" ng-show="showUsers">
 			    	<span class="listPeopleTitle">Users connected: </span>
 					<ul id="people"></ul>
 				</div>	
-				<a href="#" class="nSection next-section">Ver el protocolo</span>		
+				<a href="#" class="nSection next-section" onclick="hideinfo">Ver el protocolo</span></a>	
 			</div>
 
-		<!--<main>
-       	 
-	        <section id="slide-1" class="homeSlide">
-	        	<div class="bcg" data-center="background-position: 50% 0px;" data-top-bottom="background-position: 50% -100px;" data-anchor-target="#slide-1">
-		        	<div class="hsContainer">
-			    		<div class="hsContent" data-center="opacity: 1" data-106-top="opacity: 0" data-anchor-target="#slide-1 h2">
-				    		<h2>Fade out elements before<br />they leave viewport</h2>
-				    		<p>This slide moves background image at a slower speed then the page scroll. Text is fading out to opacity 0 at 106 pixels from the top.</p>
-			    		</div>
-		        	</div>
-	        	</div>
-		    </section>
-		    
-		    <section id="slide-2">
-		    	<div class="bcg" data-0="background-color:rgb(1,27,59);" data-top="background-color:(0,0,0);"  data-anchor-target="#slide-2">
-			    	<div class="hsContainer">
-			    		<div class="hsContent">
-				    		<h2 data-center="opacity: 1" data--200-bottom="opacity: 0" data-206-top="opacity: 1" data-106-top="opacity: 0" data-anchor-target="#slide-2 h2">Fade me in and out</h2>
-				    		<p data-center="opacity: 1" data--200-bottom="opacity: 0" data-206-top="opacity: 1" data-106-top="opacity: 0" data-anchor-target="#slide-2 h2">Here we are changing the background color from blue to black. Text is fading in at 206 pixels from the bottom and fading out 106 pixels from the top.</p>
-			    		</div>
-		        	</div>
-		    	</div>
-		    </section>
-			<section id="slide-3" data-content-offset="50p" class="homeSlide">
-				<div class="bcg" data-center="background-position: 0px 50%;" data-bottom-top="background-position: 0px 40%;" data-top-bottom="background-position: -40px 50%;" data-anchor-target="#slide-3">
-			    	<div class="hsContainer">
-			    		<div class="hsContent">
-			    			<div class="plaxEl" data-106-top="opacity: 0" data--30p-top="opacity: 1;" data--60p-top="opacity: 0;" data-bottom="opacity: 1; position: fixed; top: 206px; width: 100%; left: 0;"  data-anchor-target="#slide-3">
-					    		<h2>Fixed element fading in and out</h2>
-					    		<p><span class="bgBlack">Text is fixed 206 pixels from the top, while the background is moving 40 pixels to the left.</span></p>
-					    		<p><span class="bgBlack">Or did you think that the scooter is driving off?</span></p>
-				    		</div>
-			    		</div>
-			    	</div>
-			    	
-			    </div>
-			</section>
-		    
-		<section id="slide-4" data-content-offset="90p" class="homeSlide homeSlideTall">
-			<div class="bcg" data-center="background-position: 50% 0px;" data-bottom-top="background-position: 50% 100px;" data-top-bottom="background-position: 50% -100px;" data-anchor-target="#slide-4">
-				<div class="curtainContainer">
-		
-					<div class="curtain" data-bottom-top="opacity: 0" data-106-top="height: 1%; opacity: 0; top: -10%;" data-center="height: 100%; opacity: 0.5; top: 0%;" data-anchor-target="#slide-4"></div>
-					<div class="copy" data-bottom-top="opacity: 0" data--100-bottom="opacity: 0" data--280-bottom="opacity: 1;" data-280-top="opacity: 1;" data-106-top="opacity: 0;" data-anchor-target="#slide-4 .copy">
-						<h2>Curtain effect while you scroll</h2>
-					</div>
-					
-				</div>
+		<main id="protocolinfo">
+			<h1> Protocolo de codificación Diffie-Hellman</h1>
+			<p id="subtitulo"> Codificación con claves públicas </p>
+			
+				<h2>HELLMAN1:</h2>
+			<div>
+					<span class="descripcion">- A y B desean mantener una comunicación.</span><br>
+					<span class="descripcion">- C pretende averiguar la información que circula entre A y B.</span><br>
+					<span class="descripcion">- Existe una clave pública y una clave privada de A y una de B.</span><br>
+					<div id="image1"><span></span> </div>
 			</div>
-		</section>
-		    
-		    <section id="slide-5" data-content-offset="66p" class="homeSlide homeSlideTall2">
-		    	<div class="bcg">
-			    	&nbsp;
-		    	</div>
-		    	<div class="bcg bcg2" data-bottom-top="opacity: 0;" data--33p-top="opacity: 0;" data--66p-top="opacity: 1;" data-anchor-target="#slide-5">
-			    	<div class="hsContainer">
-				    	<div class="hsContent" data-bottom-top="opacity: 0;" data-center="opacity: 1" data-anchor-target="#slide-5">
-				    		<h2>Fixed element fading in and out</h2>
-				    		<p>Showcase your beautiful images before blurring the scene and fading in your headline.</p>
-			    		</div>
-			    	</div>
-		    	</div>
-		    	<div class="bcg bcg3" data-300-bottom="opacity: 0;" data-100-bottom="opacity: 1;" data-anchor-target="#slide-5">
-			    	<div class="hsContainer">
-				    	<div class="hsContent" data-100-bottom="opacity: 0;" data-bottom="opacity: 1;" data-anchor-target="#slide-5">
-				    		<h2>The End</h2>
-				    		<p>Not enough parallax goodness? Let me know in the comments or hit me up at <a href="https://www.twitter.com/ihatetomatoes" target="_blank">@ihatetomatoes</a>.</p>
-			    		</div>
-			    	</div>
-		    	</div>
-		    </section>
-		    
-		</main>-->
+			
+				<h2>HELLMAN2:</h2>
+			<div>
+					<span class="descripcion">- A junta su clave privada con la pública y manda la mezcla a B.</span><br>
+					<span class="descripcion">- B junta su clave privada con la pública y manda la mezcla a A.</span><br>
+					<span class="descripcion">- C intercepta ambos mensajes, obtiene las mezclas, pero no las claves privadas.</span><br>
+					<div id="image2"><span></span> </div>
+			</div>
+			
+				<h2>HELLMAN3:</h2>
+			<div>
+					<span class="descripcion">- A recibe la mezcla de B y añade a ella su propia clave privada, así obtiene la clave final.</span><br>
+					<span class="descripcion">- B recibe la mezcla de A y añade a ella su propia clave privada, así obtiene la clave final.</span><br>
+					<span class="descripcion">- C es incapaz de conseguir la clave final ya que no dispone de ninguna clave privada.</span><br>
+					<div id="image3"><span></span> </div>
+			</div>
+			
+				<h2>NUMEROS1:</h2>
+			<div>
+					<span class="descripcion">- Existen dos claves públicas: Un módulo (17) y una raíz primitiva de dicho módulo (3).</span><br>
+					<span class="descripcion">- Alberto posee una clave privada (9).</span><br>
+					<span class="descripcion">- Bernardo posee una clave privada (11).</span><br>
+			</div>
+				
+				<h2>NUMEROS2:</h2>
+			<div>
+					<span class="descripcion">- Alberto calcula 3^9 mod 17 = 14. Y envía este resultado a Bernardo, este número es interceptado también por Carlos. Esta es una clave intermedia.</span><br>
+					<span class="descripcion">- Bernardo calcula 3^11 mod 17 = 7. Y envía este resultado a Alberto, este número es interceptado también por Carlos. Esta es una clave intermedia.</span><br>
+			</div>
+			
+				<h2>NUMEROS3:</h2>
+			<div>
+					<span class="descripcion">- Alberto utiliza el resultado de Bernardo (7) y lo eleva a su número privado mod 17. 7^9 mod 17 = 10. La clave final.</span><br>
+					<span class="descripcion">- Bernardo utiliza el resultado de Alberto (14) y lo eleva a su número privado mod 17. 14^11 mod 17 = 10. La clave final.</span><br>
+					<span class="descripcion">- De este modo ambos han obtenido la clave privada (10) mientras que Carlos es incapaz de hallarla sin conocer alguna de las claves personales de Alberto o Bernardo (9 u 11).</span><br>
+			</div>
+			
+	      
+		</main>
 		<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
 		<script src="public/angular/waypoints.min.js"></script>
 		<!--<script src="public/bower_components/skrollr/dist/skrollr.min.js"></script>-->

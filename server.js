@@ -91,10 +91,29 @@ io.sockets.on("connection", function (socket) {
 			}
 				socket.emit("whisper", {name: "Tu"}, msg);
 			    io.sockets.connected[whisperId].emit("whisper", people[socket.id], msg);
-				io.sockets.emit("chat", people[socket.id], msg);
-			
-		} 
+				
+				/////////////// Send global mesage coded to the user not in the whisper
+				
+				var keys = Object.keys(people);
+
+				if (keys.length != 0) {
+
+					for (var i = 0; i<keys.length; i++) {
+
+						if (people[keys[i]] != whisperTo && socket.id != [keys[i]]) {
+						
+							io.sockets.connected[keys[i]].emit("chat", msg);
+							console.log("Mandar mensaje general a :" + people[keys[i]]);
+						}
+						else {
+							console.log(">>Usuario que participa en el whisper:" + people[keys[i]]);
+						}
+					}
+				} 
+				////////////////////////////////////////////////		
+		}
 		else {
+		console.log("esta entrando aqui");
 			io.sockets.emit("chat", people[socket.id], msg);
 		}
 	});
