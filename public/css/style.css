@@ -145,7 +145,7 @@ font-size:1.8em;
 	text-align: left;
 }
 #msgs { list-style-type: none; margin: 0; padding: 0; width:  620px; overflow: auto; max-height: 330px; position: absolute; bottom: 10px}
-#msgs li { text-align: left; padding: 5px 10px; height:35px; margin-right: 10px;  }
+#msgs li { text-align: left; padding: 5px 10px; min-height:35px; margin-right: 10px; word-break: break-all }
 #msgs li:nth-child(odd) { background: #7D7D7D; }
 
 .usersButton{
@@ -222,25 +222,19 @@ font-size:1.8em;
 	font-weight: 600;
 }
 
-.contactimages{
+.contactinfo {
 	text-align: center;
 	margin-top: 50px;
 	margin-bottom: 50px;
 }
 
+.contactinfo figure {
+	display: inline-block;
+	text-align: left;
+}
 
 .contactimage{
-	margin-left: 50px;
 	width: 180px;
 	height: 180px;
-}
-
-.contactinfo{
-	margin-top: -40px;
-	margin-left: 40px;
-}
-
-.contactinfo span{
-	display: inline-block;
-	margin-left: 50px;
+	margin-bottom: 10px;
 }
