@@ -27,7 +27,7 @@ hackthechat.controller('app', ['$scope','$location', function($scope, $timeout, 
 		var A = bigInt2str(powMod(g,a,p),64);
 		var secret="";
 		
-		var socket = io.connect("localhost:8000");
+		var socket = io.connect("");
 		
 		$("#chat").hide();
 		$("#name").focus();
