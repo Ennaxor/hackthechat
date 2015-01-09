@@ -1,7 +1,7 @@
-@import url(http://fonts.googleapis.com/css?family=Anton);
 @import url(http://fonts.googleapis.com/css?family=Orbitron);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+@import url(http://fonts.googleapis.com/css?family=Merriweather+Sans:400,800);
 
-/* Cambios de guillermo */
 
 main {
 margin:2%;
@@ -19,33 +19,29 @@ margin:4%;
 font-size:1.8em;
 }
 
-.descripcion {
-
-margin:5px;
-margin-top:5%;
+.imgCointainer{
+	text-align: center;
 }
 
-#image1 , #image2 , #image3  {
-margin-top:25px;
-margin-bottom:25px;
-margin-left:auto;
-margin-right:auto;
-width:640px;
-height:480px;
-border:solid;
-border-width:2px;
-border-color:black;
+#image1 , #image2 , #image3, #image5, #image6, #image7  {
+	margin-top:25px;
+	margin-bottom:25px;
+	margin-left:auto;
+	margin-right:auto;
+	width:533px;
+	height:400px;
 }
 
-#image1 span{
-background-image:url("H1.png");
+#image4{
+	margin-top:25px;
+	margin-bottom:25px;
+	margin-left:auto;
+	margin-right:auto;
+	width:533px;
+
 }
-#image2 span{
-background-image:url("H2.png");
-}
-#image3 span{
-background-image:url("H3.png");
-}
+
+
 
 /*Fin cambios guillermo */
 
@@ -168,4 +164,83 @@ background-image:url("H3.png");
 	display: block;
 	text-decoration: underline;
 	color: gray;
+}
+
+#protocolo{
+	margin-top: 125px;
+	background-color: #FF9800;
+	padding: 50px;
+	color: white;
+	font-family: 'Open Sans', sans-serif;	
+	text-align: justify;
+}
+
+#ejemplo{
+	background-color: #009DCC;
+	padding: 50px;
+	color: white;
+	font-family: 'Open Sans', sans-serif;	
+	text-align: justify;
+
+}
+
+#algoritmo{
+	background-color: #8700CC;
+	padding: 50px;
+	color: white;
+	font-family: 'Open Sans', sans-serif;	
+	text-align: justify;
+}
+
+#nosotros{
+	background-color: #FF9800;
+	padding: 50px;
+	color: white;
+	font-family: 'Open Sans', sans-serif;	
+	text-align: justify;
+}
+
+#protocolo h1, h2{
+	text-shadow: 0px 0px 5px rgba(150, 150, 150, 1);
+	color: white;
+	font-family: 'Merriweather Sans', sans-serif;
+}
+
+#subtitulo{
+	margin-top: -25px;
+	font-style: italic;
+}
+
+.hand{
+	margin-top: 30px;
+	font-size: 45px;
+	color: white!important;
+}
+
+#nosotros a{
+	color: white;
+	font-weight: 600;
+}
+
+.contactimages{
+	text-align: center;
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+
+
+.contactimage{
+	margin-left: 50px;
+	width: 180px;
+	height: 180px;
+}
+
+.contactinfo{
+	margin-top: -40px;
+	margin-left: 40px;
+}
+
+.contactinfo span{
+	display: inline-block;
+	margin-left: 50px;
 }

@@ -8,6 +8,9 @@
 		<link rel="stylesheet" href="public/bower_components/angular-material/angular-material.css">		
 		<link rel="stylesheet" href="public/bower_components/angular-material/themes/orange-theme.css">
 		<link rel="stylesheet" href="public/bower_components/font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" href="public/bower_components/animation//dist/font-awesome-animation.min.css">
+
+
 		
 		<link href="public/css/style.css" rel="stylesheet"/>
 		<!--<link href="public/css/main.css" rel="stylesheet"/>-->
@@ -35,15 +38,15 @@
 
 	<body class="loading" ng-app="hackthechat" ng-controller="app" md-theme="orange">
 		<!-- HERE STARTS THE GOOD STUFF -->
-		<md-toolbar md-scroll-shrink>
+		<md-toolbar>
 		    <div class="md-toolbar-tools">
 		    	<img class="imageHeader" src="public/logo.png" alt="Logo App"/>
 		      	<h3 class="toolbarTitle">
 		        	<span>Hack the Chat</span>
 		      	</h3>
 		      	<div layout="row" layout-align="end start" flex>
-					<md-button class="white"><i class="fa fa-question soft"></i> El protocolo</md-button>
-					<md-button class="white"><i class="fa fa-smile-o soft"></i> Sobre nosotros</md-button>
+					<md-button class="white"><i class="fa fa-question soft"></i> <a href="##protocolo"> El protocolo</a></md-button>
+					<md-button class="white"><i class="fa fa-smile-o soft"></i><a href="##nosotros"> Sobre nosotros </a></md-button>
 				</div>
 		    </div>
 		</md-toolbar>
@@ -77,59 +80,109 @@
 		    	<span class="listPeopleTitle">Users connected: </span>
 				<ul id="people"></ul>
 			</div>	
-			<a href="#" class="nSection next-section" onclick="">Ver el protocolo</span></a>	
+			<a href="##protocolo" class="nSection">Ver el protocolo</a>	
 		</div>
 
-		<main id="protocolinfo">
+		<section id="protocolo">
 			<h1> Protocolo de codificación Diffie-Hellman</h1>
 			<p id="subtitulo"> Codificación con claves públicas </p>
+
+				<h2>INTRODUCCIÓN:</h2>
+			<span>Diffie-Hellman es un <b>protocolo de intercambio de claves entre usuarios</b>. Este protocolo genera una clave privada única con la cual los usuarios que la posean serán capaces de enviar y recibir información entre ellos en un entorno no seguro.
+			A diferencia de la mayoría de los algoritmos vistos en clase, Diffie-Hellman no proporciona un método de cifrado o descifrado de información, si no que genera una clave secreta mediante el uso de una clave pública y varias privadas.<br><br>
+			Su objetivo es generar una clave privada única para los usuarios autorizados implicados en la comunicación.
+
+			En la actualidad, habiendo finalizado la patente del protocolo, el algoritmo Diffie-Hellman es de dominio público y es estudiado como el primer ejemplo específico de criptografía en clave pública. Por ello, hemos desarrollado este chat en un entorno web para demostrar la eficacia del algoritmo.<br><br>
+
+			A continuación relatamos el desarrollo del algoritmo junto a su explicación:
+			</span>
+			<div style="text-align:center"><a href="##explicacion"><i class="fa fa-hand-o-down faa-bounce animated hand"></i></a></div>
+
+		</section>
+		<section id="ejemplo">
+				<h2 id="explicacion">EN COLORES:</h2>
+			<span>Digamos que las claves vienen dadas en forma de colores, pintura por ejemplo. Es muy fácil mezclar dos colores para obtener uno nuevo, pero es muy difícil volver a separar ese color resultante para obtener los colores originales. <br>
+			Supongamos tres personajes: <b>Alberto (A), Bernardo (B) y Carlos (C).</b> </span>
+			<ul>
+				<div class="imgCointainer"><img id="image1" src="public/css/img/img1.png" alt="Imagen 1"/>  </div>
+				<li class="descripcion">Alberto y Bernardo desean mantener una comunicación.</li><br>
+				<li class="descripcion">Carlos pretende averiguar qué es lo que están tramando Alberto y Bernardo.</li><br>
+				<li class="descripcion">Alberto (rojo) y Bernardo (azul) tienen cada uno una clave pública (amarillo) y una clave privada (azul). </li><br>
+			</ul>
+
+			<ul>
+				<div class="imgCointainer"><img id="image2" src="public/css/img/img2.png" alt="Imagen 2"/>  </div>
+				<li class="descripcion">Alberto junta su clave privada con la pública y manda la mezcla (naranja) a Bernardo.</li><br>
+				<li class="descripcion">Bernardo junta su clave privada con la pública y manda la mezcla (verde) a Alberto.</li><br>
+				<li class="descripcion">Carlos intercepta ambos mensajes, obtiene las mezclas (naranja y verde), pero no las claves privadas. </li><br>
+			</ul>
+
+			<ul>
+				<div class="imgCointainer"><img id="image3" src="public/css/img/img3.png" alt="Imagen 3"/>  </div>
+				<li class="descripcion">Alberto recibe la mezcla de Bernardo y le añade su propia clave privada (rojo), obteniendo así la clave final (caqui).</li><br>
+				<li class="descripcion">Bernardo recibe la mezcla de Alberto y le añade su propia clave privada (azul), obteniendo así la clave final (caqui).</li><br>
+				<li class="descripcion">Carlos es incapaz de conseguir la clave final ya que no dispone de ninguna clave privada. Y aunque intentara obtener el resultado original, tendría que probar miles y miles de combinaciones.</li><br>
+			</ul>
+			<span>De este modo logramos lo que se conoce como <b>función de una sola dirección</b>, es decir, una función en la que obtener el resultado en una dirección es fácil, pero en la contraria es casi imposible. <br>
+			Este ha sido sólo un ejemplo. Para que la aplicación tenga utilidad alguna tenemos que encontrar un procedimiento numérico que sea fácil en una dirección y difícil en la opuesta. La solución es la <b>aritmética modular.</b></span>
+			<div style="text-align:center"><a href="##algoritmo"><i class="fa fa-hand-o-down faa-bounce animated hand"></i></a></div>
+			</section>
+			<section id="algoritmo">
+				<h2>ALGORITMO:</h2>
+				<ul>
+					<li class="descripcion">Usaremos un número primo como módulo (17).</li><br>
+					<li class="descripcion">Necesitamos una raíz primitiva a ese número (3).</li><br>
+					<li class="descripcion">Una raíz primitiva de un módulo m es un número el cual elevado a los números comprendidos entre 1 y m-1 da como resultado todos los números enteros entre 1 y m-1.</li><br>
+					<div class="imgCointainer"><img id="image4" src="public/css/img/img4.png" alt="Imagen 4"/>  </div>
+					<li class="descripcion">Ningún número se repite y todos tienen la misma probabilidad de salir.</li><br>
+					<li class="descripcion">Por ello obtener la clave privada (13) a partir del resultado público (12) es muy complicado, ya que 2^29 mod 17 por ejemplo da el mismo resultado (12).</li><br>
+					<li class="descripcion">El camino de vuelta, deshacer el algoritmo es casi imposible.</li><br>
+					<li class="descripcion">Usando un módulo primo de centenares de dígitos encontrar la solución por fuerza bruta en un tiempo plausible es impracticable</li><br>
+				</ul>
+				<ul>
+					<div class="imgCointainer"><img id="image5" src="public/css/img/alg1.png" alt="Algoritmo1"/>  </div>
+					<li class="descripcion">Existen dos claves públicas: Un módulo (17) y una raíz primitiva de dicho módulo (3).</li><br>
+					<li class="descripcion">Alberto posee una clave privada (9).</li><br>
+					<li class="descripcion">Bernardo posee una clave privada (11).</li><br>
+				</ul>
+				<ul>
+					<div class="imgCointainer"><img id="image6" src="public/css/img/alg2.png" alt="Algoritmo2"/>  </div>
+					<li class="descripcion">Alberto calcula <b>3^9 mod 17 = 14</b>. Y envía este resultado a Bernardo, este número es interceptado también por Carlos. Esta es una clave intermedia.</li><br>
+					<li class="descripcion">Bernardo calcula <b>3^11 mod 17 = 7</b>. Y envía este resultado a Alberto, este número es interceptado también por Carlos. Esta es una clave intermedia.</li><br>
+				</ul>
+					<ul>
+					<div class="imgCointainer"><img id="image7" src="public/css/img/alg3.png" alt="Algoritmo3"/>  </div>
+					<li class="descripcion">Alberto utiliza el resultado de Bernardo (7) y lo eleva a su número privado mod 17. <b>7^9 mod 17 = 10</b>. La clave final.</li><br>
+					<li class="descripcion">Bernardo utiliza el resultado de Alberto (14) y lo eleva a su número privado mod 17. <b>14^11 mod 17 = 10</b>. La clave final</li><br>
+					<li class="descripcion">De este modo ambos han obtenido la clave privada (10) mientras que Carlos es incapaz de hallarla sin conocer alguna de las claves personales de Alberto o Bernardo (9 u 11).</li><br>
+				</ul>
+				<span><b>
+					Podemos llegar a la conclusión de que la fuerza de esta función de una única dirección reside en el tiempo necesario para hacer el camino contrario. Usando un valor numérico suficientemente elevado podemos hacer que ese tiempo sea tan elevado que resulte imposible resolver esta función en un tiempo razonable.</b>
+				</span>
+			</section>
+			<section id="nosotros">
+				<h2>SOBRE NOSOTROS:</h2>
+				<span>Somos un grupo de estudiantes de <a href="http://cvnet.cpd.ua.es/webcvnet/planestudio/planestudiond.aspx?plan=C205">Ingeniería Multimedia en la universidad de Alicante</a> y este trabajo sobre el protocolo Diffie-Hellman es para la asignatura <a href="http://cv1.cpd.ua.es/consplanesestudio/cvFichaAsiEEES.asp?wCodAsi=21024&scaca=2012-13&wLengua=C&wCodEst=">Compresión y Seguridad</a>.<br><br>
+				Puedes contactar con los compontenes del grupo vía nuestras redes sociales:</span>
 			
-				<h2>HELLMAN1:</h2>
-			<div>
-					<span class="descripcion">- A y B desean mantener una comunicación.</span><br>
-					<span class="descripcion">- C pretende averiguar la información que circula entre A y B.</span><br>
-					<span class="descripcion">- Existe una clave pública y una clave privada de A y una de B.</span><br>
-					<div id="image1"><span></span> </div>
-			</div>
-			
-				<h2>HELLMAN2:</h2>
-			<div>
-					<span class="descripcion">- A junta su clave privada con la pública y manda la mezcla a B.</span><br>
-					<span class="descripcion">- B junta su clave privada con la pública y manda la mezcla a A.</span><br>
-					<span class="descripcion">- C intercepta ambos mensajes, obtiene las mezclas, pero no las claves privadas.</span><br>
-					<div id="image2"><span></span> </div>
-			</div>
-			
-				<h2>HELLMAN3:</h2>
-			<div>
-					<span class="descripcion">- A recibe la mezcla de B y añade a ella su propia clave privada, así obtiene la clave final.</span><br>
-					<span class="descripcion">- B recibe la mezcla de A y añade a ella su propia clave privada, así obtiene la clave final.</span><br>
-					<span class="descripcion">- C es incapaz de conseguir la clave final ya que no dispone de ninguna clave privada.</span><br>
-					<div id="image3"><span></span> </div>
-			</div>
-			
-				<h2>NUMEROS1:</h2>
-			<div>
-					<span class="descripcion">- Existen dos claves públicas: Un módulo (17) y una raíz primitiva de dicho módulo (3).</span><br>
-					<span class="descripcion">- Alberto posee una clave privada (9).</span><br>
-					<span class="descripcion">- Bernardo posee una clave privada (11).</span><br>
-			</div>
-				
-				<h2>NUMEROS2:</h2>
-			<div>
-					<span class="descripcion">- Alberto calcula 3^9 mod 17 = 14. Y envía este resultado a Bernardo, este número es interceptado también por Carlos. Esta es una clave intermedia.</span><br>
-					<span class="descripcion">- Bernardo calcula 3^11 mod 17 = 7. Y envía este resultado a Alberto, este número es interceptado también por Carlos. Esta es una clave intermedia.</span><br>
-			</div>
-			
-				<h2>NUMEROS3:</h2>
-			<div>
-					<span class="descripcion">- Alberto utiliza el resultado de Bernardo (7) y lo eleva a su número privado mod 17. 7^9 mod 17 = 10. La clave final.</span><br>
-					<span class="descripcion">- Bernardo utiliza el resultado de Alberto (14) y lo eleva a su número privado mod 17. 14^11 mod 17 = 10. La clave final.</span><br>
-					<span class="descripcion">- De este modo ambos han obtenido la clave privada (10) mientras que Carlos es incapaz de hallarla sin conocer alguna de las claves personales de Alberto o Bernardo (9 u 11).</span><br>
-			</div>
-			
+				<div class="contactimages">
+					<img class="contactimage" src="public/css/img/rox.png" alt="Roxanne"/>
+					<img class="contactimage" src="public/css/img/guille.png" alt="Guillermo"/>
+					<img class="contactimage" src="public/css/img/lucia.png" alt="Lucia"/>
+					<img class="contactimage" src="public/css/img/juanca.png" alt="Juan Carlos"/>
+					<img class="contactimage" src="public/css/img/eduardo.png" alt="Eduardo"/>
+				</div>
+				 <div class="contactinfo">
+				 <span>Roxanne López van Dooren <br><b> @ennaxorl</b></span>
+				 <span>Guillermo Dorado Vide <br> <b>@ShadownHeart</b></span>
+				 <span>Lucía Más Lillo <br> <b>@ShadownHeart</b></span>
+				 <span>Juan Carlos Barberá Díaz <br> <b>@johnkeisuke </b></span>
+				 <span>Eduardo Ramos Jaime <br> <b>@johnkeisuke </b></span>
 	      
-		</main>
+    			</div>
+	      
+		</section>
+
 		<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
 		<script src="public/angular/waypoints.min.js"></script>
 		<!--<script src="public/bower_components/skrollr/dist/skrollr.min.js"></script>-->

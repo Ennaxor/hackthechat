@@ -1,11 +1,15 @@
 var hackthechat = angular.module('hackthechat', ['ngMaterial', 'jsbn.BigInteger']);
 
 
-hackthechat.controller('app', ['$scope','$location', function($scope, $timeout, $location, BigInteger){
+hackthechat.controller('app', ['$scope','$location', function($scope, $timeout, $location, BigInteger, $anchorScroll){
 		
   $scope.greeting = 'Hola!';
 
   $scope.showUsers = false;
+
+  $scope.goToProtocol = function(){
+  	$location.href( "/#/protocolo" );
+  }
 
   //$scope.myInt = new BigInteger('123412341234123412341234123412341234');
   $(document).ready(function(){
