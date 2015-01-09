@@ -10,6 +10,7 @@ var publickeys = {};
 var public_keyA = '';
 var A_id;
 var public_keyB = '';
+var port = process.env.PORT || 8000;
 
 //Declaracion de rutas
 app.use("/public", express.static(__dirname + '/public'));
@@ -126,6 +127,5 @@ io.sockets.on("connection", function (socket) {
 });
 
 
-server.listen(8000, function(){
-  console.log('listening on *:8000');
+server.listen(port, function(){
 });
