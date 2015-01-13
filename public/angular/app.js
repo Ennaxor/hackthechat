@@ -29,6 +29,8 @@ hackthechat.controller('app', ['$scope','$location', function($scope, $timeout, 
 		
 		var socket = io.connect("");
 		
+		var whisper_msg = "";
+		
 		$("#chat").hide();
 		$("#name").focus();
 		$("form").submit(function(event){
@@ -59,7 +61,7 @@ hackthechat.controller('app', ['$scope','$location', function($scope, $timeout, 
 			}
 		});
 
-		socket.on("whisper", function(person, msg) {
+		socket.on("whisper", function(person, whisperTo, msg) {
 		    if (person.name === "Tu") {
 		      s = "susurras";
 			  
@@ -76,7 +78,7 @@ hackthechat.controller('app', ['$scope','$location', function($scope, $timeout, 
 					secret ="";
 				}
 			  
-		      $("#msgs").append("<li><strong><span style='color:orange;'>" + person.name + "</span></strong> "+s+": " + msg + "</li>");
+		      $("#msgs").append("<li><strong><span style='color:orange;'>" + person.name + "</span></strong> "+s+ " a " + whisperTo + ": " + msg + "</li>");
 		    } else {
 		      s = "susurra";
 			  
@@ -133,14 +135,15 @@ hackthechat.controller('app', ['$scope','$location', function($scope, $timeout, 
 			$("#send").attr("disabled", "disabled");
 		});
 		
-		socket.on("DH", function(msg, whisperTo){
+		socket.on("DH", function(whisperTo){
 		
-			var mensaje = msg;
+			var mensaje = whisper_msg;
 			var isCoded = false;
 			var re = /^[w]:.*:/;
-			var whisper = re.test(msg);
-			var whisperStr = msg.split(":");
+			var whisper = re.test(whisper_msg);
+			var whisperStr = whisper_msg.split(":");
 			var whisperMsg = whisperStr[2];
+			whisper_msg = "";
 			
 			if(ready) {
 				if (secret!="") {				
@@ -174,7 +177,8 @@ hackthechat.controller('app', ['$scope','$location', function($scope, $timeout, 
 
 				if (whisper) {
 					var whisperTo = whisperStr[1];
-					socket.emit("check", whisperTo, msg);
+					whisper_msg = msg;
+					socket.emit("check", whisperTo);
 				}
 				else {
 				
@@ -202,7 +206,8 @@ hackthechat.controller('app', ['$scope','$location', function($scope, $timeout, 
 						if (whisper) {
 
 							var whisperTo = whisperStr[1];
-							socket.emit("check", whisperTo, msg);
+							whisper_msg = msg;
+							socket.emit("check", whisperTo);
 						}
 						else {
 						

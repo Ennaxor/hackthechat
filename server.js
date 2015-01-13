@@ -34,7 +34,7 @@ io.sockets.on("connection", function (socket) {
 		io.sockets.emit("update-people", people);
 	});
 
-	socket.on("check", function(user, msg){
+	socket.on("check", function(user){
 
 			var found = false;
 			var whisperTo = user;
@@ -63,7 +63,7 @@ io.sockets.on("connection", function (socket) {
 				socket.emit("public_key", publickeys[whisperId]);
 				io.sockets.connected[whisperId].emit("public_key", publickeys[socket.id]);
 
-				io.sockets.connected[socket.id].emit("DH", msg, whisperTo);
+				io.sockets.connected[socket.id].emit("DH", whisperTo);
 
 				return true;
 
@@ -90,8 +90,8 @@ io.sockets.on("connection", function (socket) {
 					} 
 				}
 			}
-				socket.emit("whisper", {name: "Tu"}, msg);
-			    io.sockets.connected[whisperId].emit("whisper", people[socket.id], msg);
+				socket.emit("whisper", {name: "Tu"}, whisperTo, msg);
+			    io.sockets.connected[whisperId].emit("whisper", people[socket.id], whisperTo, msg);
 				
 				/////////////// Send global mesage coded to the user not in the whisper
 				
